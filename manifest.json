@@ -1,12 +1,13 @@
 {
   "manifest_version": 3,
   "name": "LinkedIn Job Description Auto Expand",
-  "version": "1.0.1",
-  "description": "Automatically expands the About the job description when you open or switch LinkedIn jobs.",
+  "version": "1.1.0",
+  "description": "Expands LinkedIn job descriptions and shows full resume filenames when applying or managing resumes.",
   "content_scripts": [
     {
       "matches": ["https://*.linkedin.com/jobs/*", "https://linkedin.com/jobs/*"],
-      "js": ["src/content.js"],
+      "js": ["src/content.js", "src/resume-filenames.js"],
+      "css": ["src/resume-filenames.css"],
       "run_at": "document_idle",
       "all_frames": false
     }

@@ -1,6 +1,8 @@
 # LinkedIn Job Description Auto Expand
 
-A small Chrome Manifest V3 extension that clicks **… more** in **About the job** when you open or change LinkedIn jobs. No build step, dependencies, background service, settings, analytics, storage, or network requests.
+A small Chrome Manifest V3 extension that clicks **… more** in **About the job** when you open or change LinkedIn jobs, and displays full resume filenames in Easy Apply and resume settings. No build step, dependencies, background service, settings, analytics, storage, or network requests.
+
+Resume cards grow to fit the filename and extension. Long filenames wrap when the available width is limited. This changes the layout only; it does not upload files, select resumes, or submit applications. Filenames must already be present in LinkedIn's page text; the extension cannot reconstruct a filename shortened by the server.
 
 ## Chrome Web Store
 
@@ -34,12 +36,15 @@ After editing the extension, click its **Reload** button in `chrome://extensions
 ```text
 manifest.json       Chrome extension definition
 src/content.js      Description detection and expansion
+src/resume-filenames.js  Easy Apply resume card detection
+src/resume-filenames.css Full filename layout
 tests/smoke.cjs      Browser regression checks (development only)
+tests/resume-filenames.cjs Resume layout checks
 README.md           Installation and limitations
 ```
 
 ## Development checks (optional)
 
-With Node.js installed, run `npm install --no-save playwright`, then `npx playwright install chromium` and `node tests/smoke.cjs`. These tools are only for testing; the extension itself has no dependencies. The checks use local HTML fixtures, with no LinkedIn login or requests.
+With Node.js installed, run `npm install --no-save playwright`, then `npx playwright install chromium`, `node tests/smoke.cjs`, and `node tests/resume-filenames.cjs`. These tools are only for testing; the extension itself has no dependencies. The checks use local HTML fixtures, with no LinkedIn login or requests.
 
 Chrome documentation: [content scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts).

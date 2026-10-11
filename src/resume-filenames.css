@@ -1,0 +1,45 @@
+/* Resume settings: grow the card to its filename, capped by the page width. */
+.jobs-resume-card__container {
+  width: max-content !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.jobs-resume-card__container .jobs-resume-card__attachment {
+  width: auto !important;
+  max-width: 100% !important;
+  /* Reserve the existing absolutely positioned menu's width. */
+  padding-inline-end: 100px !important;
+  box-sizing: border-box !important;
+}
+
+.jobs-resume-card__container .ui-attachment__filename {
+  width: auto !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  overflow-wrap: anywhere !important;
+  text-overflow: clip !important;
+}
+
+/* Easy Apply: only cards identified by the resume-step content script. */
+.li-auto-expand-resume-card {
+  width: max-content !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.li-auto-expand-resume-card .li-auto-expand-resume-text {
+  width: auto !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  flex-shrink: 1 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  overflow-wrap: anywhere !important;
+  text-overflow: clip !important;
+  -webkit-line-clamp: unset !important;
+}
