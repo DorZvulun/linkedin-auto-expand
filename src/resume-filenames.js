@@ -1,7 +1,7 @@
 (() => {
   "use strict";
   const filename = /^.{1,500}\.(?:docx?|pdf)$/i;
-  const dialogs = '[role="dialog"], .jobs-easy-apply-modal';
+  const dialogs = 'dialog[open], [role="dialog"], .jobs-easy-apply-modal';
   let timer = null;
 
   function scan() {
@@ -9,7 +9,7 @@
     if (!location.pathname.startsWith("/jobs/")) return;
     for (const dialog of document.querySelectorAll(dialogs)) {
       // Keep layout changes within the resume step of an application dialog.
-      if (!Array.from(dialog.querySelectorAll('h2, h3, h4, legend')).some(
+      if (!Array.from(dialog.querySelectorAll('h2, h3, h4, legend, p, span')).some(
         (heading) => /^resume$/i.test(heading.textContent.trim()))) continue;
       for (const name of dialog.querySelectorAll("h3, p, span, strong")) {
         // Full filenames are in DOM text even when CSS paints an ellipsis.
@@ -17,14 +17,14 @@
         if (name.children.length || !filename.test(name.textContent.trim()) ||
             name.closest('button, a, [aria-hidden="true"], [hidden]')) continue;
         let card = name.parentElement;
-        for (let depth = 0; card && card !== dialog && depth < 6; depth++, card = card.parentElement) {
+        for (let depth = 0; card && card !== dialog && depth < 10; depth++, card = card.parentElement) {
           const style = getComputedStyle(card);
           const bordered = ["Top", "Right", "Bottom", "Left"].some(
             (side) => parseFloat(style[`border${side}Width`]) > 0 &&
               style[`border${side}Style`] !== "none");
           if (!bordered) continue;
           // A resume card contains a single file and its selection/download UI.
-          if (!card.querySelector('button, input[type="radio"], [role="radio"]')) break;
+          if (!card.querySelector('button, [role="button"], input[type="radio"], [role="radio"]')) break;
           const names = Array.from(card.querySelectorAll("h3, p, span, strong")).filter(
             (element) => !element.children.length && filename.test(element.textContent.trim()));
           if (names.length !== 1 || names[0] !== name) break;

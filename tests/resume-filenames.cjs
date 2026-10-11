@@ -85,5 +85,30 @@ const { chromium } = require("playwright");
     assert.equal(modern.clipped,false);
     assert.ok(modern.nameRight <= modern.controlLeft);
     console.log("PASS dynamic Easy Apply cards, wrapping, controls and selection preserved, outside-dialog content unchanged");
+    await page.setViewportSize({width:1100,height:800});
+    await page.evaluate((filename) => {
+      document.querySelector(".modal").remove();
+      const dialog = document.createElement("dialog");
+      dialog.className = "modal";
+      dialog.innerHTML = `<h2>Apply to Example</h2><p>Resume</p><div class="card" id="native-card">
+        <div><div role="button" tabindex="0"><div style="display:flex;gap:12px"><span>DOC</span>
+          <div style="width:246px"><div><div><p class="filename"><span>${filename}</span></p></div></div></div>
+        </div></div></div><span role="radio" aria-checked="true">Selected</span></div>`;
+      document.body.append(dialog);
+      dialog.showModal();
+    }, filename);
+    await page.waitForTimeout(350);
+    const native = await page.evaluate(() => {
+      const card=document.querySelector("#native-card"), name=card.querySelector(".filename");
+      return {marked:card.classList.contains("li-auto-expand-resume-card"),
+        clipped:name.scrollWidth>name.clientWidth+1,
+        selected:card.querySelector('[role="radio"]').getAttribute("aria-checked"),
+        clicked:window.clicked};
+    });
+    assert.equal(native.marked,true,"native dialog, paragraph step label, and deeply nested role=button card must be recognized");
+    assert.equal(native.clipped,false);
+    assert.equal(native.selected,"true");
+    assert.equal(native.clicked,0);
+    console.log("PASS live-layout fixture: native dialog, paragraph Resume label, eight-level filename nesting, role=button card");
   } finally { await browser.close(); }
 })().catch((error) => { console.error(error); process.exitCode = 1; });

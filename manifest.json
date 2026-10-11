@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "LinkedIn Job Description Auto Expand",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Expands LinkedIn job descriptions and shows full resume filenames when applying or managing resumes.",
   "content_scripts": [
     {
